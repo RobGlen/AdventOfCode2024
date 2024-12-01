@@ -6,6 +6,8 @@
 class Day01 : public Day
 {
 public:
+	Day01();
+
 	virtual std::string GetDayId() const override
 	{
 		return "Day01";

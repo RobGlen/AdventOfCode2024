@@ -8,8 +8,10 @@
 
 struct DayData
 {
-	std::vector<std::string> m_data;
+	std::vector<std::string> m_rawData;
 	std::string m_tokenSeparator = " ";
+
+	std::vector<std::vector<std::string>> m_data;
 };
 
 
