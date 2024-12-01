@@ -10,10 +10,8 @@ Day01::Day01()
 	m_dayData.m_tokenSeparator = "   ";
 }
 
-void Day01::RunDay()
+void Day01::RunDayPart1()
 {
-	m_dayData;
-
 	std::vector<int> listA, listB;
 
 	for (const std::vector<std::string>& pair : m_dayData.m_data)
@@ -36,5 +34,32 @@ void Day01::RunDay()
 		sum += std::abs(listA[i] - listB[i]);
 	}
 
-	std::cout << sum;
+	std::cout << sum << std::endl;
+}
+
+void Day01::RunDayPart2()
+{
+	std::vector<int> listA, listB;
+
+	for (const std::vector<std::string>& pair : m_dayData.m_data)
+	{
+		listA.push_back(std::stoi(pair[0]));
+		listB.push_back(std::stoi(pair[1]));
+	}
+
+	int sum = 0;
+	for (int aItem : listA)
+	{
+		int count = 0;
+
+		std::vector<int>::iterator it = listB.begin();
+		while ((it = std::find(it, listB.end(), aItem)) != listB.end())
+		{
+			count++;
+			it++;
+		}
+		sum += aItem * count;
+	}
+
+	std::cout << sum << std::endl;
 }

@@ -20,7 +20,9 @@ class Day
 public:
 	virtual std::string GetDayId() const = 0;
 
-	virtual void RunDay() = 0;
+	void RunDay();
+	virtual void RunDayPart1() = 0;
+	virtual void RunDayPart2() = 0;
 
 	template<class T_Class>
 	static void Create()

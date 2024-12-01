@@ -13,7 +13,8 @@ public:
 		return "Day01";
 	}
 
-	virtual void RunDay() override;
+	virtual void RunDayPart1() override;
+	virtual void RunDayPart2() override;
 };
 
 CREATE_DAY(Day01)
