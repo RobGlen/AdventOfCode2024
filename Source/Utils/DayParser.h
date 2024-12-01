@@ -6,4 +6,4 @@ namespace DayParser
 	void ParseDay(char* const dayArg);
 };
 
-#endif
+#endif //__DAY_PARSER_H__

@@ -33,6 +33,9 @@
     <ClCompile Include="Source\Utils\DayParser.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Utils\DayManager.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Day.h">
@@ -42,6 +45,9 @@
       <Filter>Source Files\Days</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utils\DayParser.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utils\DayManager.h">
       <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
