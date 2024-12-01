@@ -6,6 +6,7 @@
 *.ini
 *.user
 *.VC.*
+*.args.json
 .vs/
 Debug/
 Release/
