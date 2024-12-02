@@ -10,8 +10,8 @@ struct DayData
 {
 	std::vector<std::string> m_rawData;
 	std::string m_tokenSeparator = " ";
-
 	std::vector<std::vector<std::string>> m_data;
+	bool m_enableDebugReport = false;
 };
 
 
@@ -41,6 +41,9 @@ public:
 	}
 
 protected:
+	void DebugReport(const std::string& inString) const;
+	void DebugReportEndl();
+
 	DayData m_dayData;
 
 };

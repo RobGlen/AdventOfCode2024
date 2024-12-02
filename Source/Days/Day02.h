@@ -15,6 +15,9 @@ public:
 
 	virtual void RunDayPart1() override;
 	virtual void RunDayPart2() override;
+
+private:
+	void SafetyReport(const bool canRemoveLevel);
 };
 
 CREATE_DAY(Day02)
