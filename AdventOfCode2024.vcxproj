@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Day.cpp" />
     <ClCompile Include="Source\Days\Day01.cpp" />
+    <ClCompile Include="Source\Days\Day02.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Utils\DayManager.cpp" />
     <ClCompile Include="Source\Utils\DayParser.cpp" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Day.h" />
     <ClInclude Include="Source\Days\Day01.h" />
+    <ClInclude Include="Source\Days\Day02.h" />
     <ClInclude Include="Source\Utils\DayManager.h" />
     <ClInclude Include="Source\Utils\DayParser.h" />
   </ItemGroup>
