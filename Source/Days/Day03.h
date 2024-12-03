@@ -17,6 +17,7 @@ public:
 	virtual void RunDayPart2() override;
 
 private:
+	void RunCorruptedProgram(const bool runDoAndDont = false);
 };
 
 CREATE_DAY(Day03)
