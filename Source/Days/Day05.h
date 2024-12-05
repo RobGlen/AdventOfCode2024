@@ -1,16 +1,16 @@
-#ifndef __DAY_04_H__
-#define __DAY_04_H__
+#ifndef __DAY_05_H__
+#define __DAY_05_H__
 
 #include "Day.h"
 
-class Day04 : public Day
+class Day05 : public Day
 {
 public:
-	Day04();
+	Day05();
 
 	virtual std::string GetDayId() const override
 	{
-		return "Day04";
+		return "Day05";
 	}
 
 	virtual void RunDayPart1() override;
@@ -19,6 +19,6 @@ public:
 private:
 };
 
-CREATE_DAY(Day04)
+CREATE_DAY(Day05)
 
-#endif //__DAY_04_H__
+#endif //__DAY_05_H__
