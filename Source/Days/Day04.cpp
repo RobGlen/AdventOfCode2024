@@ -20,7 +20,7 @@ Day04::Day04()
 
 void Day04::RunDayPart1()
 {
-	m_dayData.m_enableDebugReport = true;
+	m_dayData.m_enableDebugReport = false;
 
 	int xmasCount = 0;
 	std::string stringToFind = "XMAS";
@@ -111,5 +111,78 @@ void Day04::RunDayPart1()
 void Day04::RunDayPart2()
 {
 	m_dayData.m_enableDebugReport = false;
-	
+
+	std::vector<Pos> posOffsetsToTest = {
+		// diagonals
+		{ -1, -1 },
+		{ 1, -1 },
+		{ -1, 1 },
+		{ 1, 1 }
+	};
+
+	int xmasCount = 0;
+	for (int i = 0; i < m_dayData.m_rawData.size(); ++i)
+	{
+		const std::string& row = m_dayData.m_rawData[i];
+		for (int j = 0; j < row.size(); ++j)
+		{
+			if (row[j] == 'A')
+			{
+				int MCount = 0;
+				int SCount = 0;
+				Pos M1Index = { -1, -1 };
+				Pos S1Index = { -1, -1 };
+				bool MAligned = false;
+				bool SAligned = false;
+				for (const Pos pos : posOffsetsToTest)
+				{
+					const int x = j + pos.x;
+					const int y = i + pos.y;
+
+					if (y < 0 || y >= m_dayData.m_rawData.size())
+					{
+						continue;
+					}
+
+					if (x < 0 || x >= m_dayData.m_rawData[y].size())
+					{
+						continue;
+					}
+
+					if (m_dayData.m_rawData[y][x] == 'M')
+					{
+						MCount++;
+
+						if (MCount == 1)
+						{
+							M1Index = { x, y };
+						}
+						else if (MCount == 2)
+						{
+							MAligned = x == M1Index.x || y == M1Index.y;
+						}
+					}
+					else if (m_dayData.m_rawData[y][x] == 'S')
+					{
+						SCount++;
+
+						if (SCount == 1)
+						{
+							S1Index = { x, y };
+						}
+						else if (SCount == 2)
+						{
+							SAligned = x == S1Index.x || y == S1Index.y;
+						}
+					}
+				}
+
+				if (MAligned && SAligned)
+				{
+					xmasCount++;
+				}
+			}
+		}
+	}
+	std::cout << xmasCount << std::endl;
 }
