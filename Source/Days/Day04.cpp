@@ -7,6 +7,12 @@
 #include <vector>
 #include <regex>
 
+struct Pos
+{
+	int x = 0;
+	int y = 0;
+};
+
 Day04::Day04()
 {
 	m_dayData.m_tokenSeparator = "";
@@ -14,14 +20,29 @@ Day04::Day04()
 
 void Day04::RunDayPart1()
 {
-	m_dayData.m_enableDebugReport = false;
+	m_dayData.m_enableDebugReport = true;
 
 	int xmasCount = 0;
 	std::string stringToFind = "XMAS";
 
-	std::function<bool(const int, const int, const int)> FindAdjadcentCharFunc = nullptr;
+	std::function<bool(const int, const int, const int, const Pos)> FindAdjadcentCharFunc = nullptr;
 
-	// std::function<bool(std::vector<std::string>& data, const int x, const int y, const int STFIndex)
+	std::vector<Pos> posOffsetsToTest = {
+		// neutral
+		//{ 0, 0 },
+
+		// up down left right
+		{ -1, 0 },
+		{ 1, 0 },
+		{ 0, -1 },
+		{ 0, 1 },
+
+		// diagonals
+		{ -1, -1 },
+		{ 1, -1 },
+		{ -1, 1 },
+		{ 1, 1 }
+	};
 
 	const auto TestIndexForXmas = [&FindAdjadcentCharFunc, &stringToFind, &data = m_dayData.m_rawData](const int x, const int y, const int STFIndex) -> bool
 		{
@@ -40,76 +61,46 @@ void Day04::RunDayPart1()
 			return row[x] == stringToFind[STFIndex];
 		};
 
-	FindAdjadcentCharFunc = [&FindAdjadcentCharFunc, &TestIndexForXmas, &stringToFind, &data = m_dayData.m_rawData](const int x, const int y, const int STFIndex) -> bool
+	FindAdjadcentCharFunc = [this, &FindAdjadcentCharFunc, &TestIndexForXmas, &stringToFind, &data = m_dayData.m_rawData, &xmasCount](const int x, const int y, const int STFIndex, const Pos posToTest) -> bool
 	{
-		if (stringToFind.size() < STFIndex)
+		if (STFIndex >= stringToFind.size())
 		{
-			return false;
+			++xmasCount;
+			return true;
 		}
 
 		const int nextStfIndex = STFIndex + 1;
 
-		if (TestIndexForXmas(x, y, STFIndex))
+		if (TestIndexForXmas(x + posToTest.x, y + posToTest.y, STFIndex))
 		{
-			return FindAdjadcentCharFunc(x, y, nextStfIndex);
+			if (FindAdjadcentCharFunc(x + posToTest.x, y + posToTest.y, nextStfIndex, posToTest))
+			{
+				return true;
+			}
 		}
 
-		// cross - up down left right
-		if (TestIndexForXmas(x - 1, y, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x - 1, y, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x + 1, y, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x + 1, y, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x, y - 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x, y - 1, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x, y + 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x, y + 1, nextStfIndex);
-		}
-
-		// diagonals
-		if (TestIndexForXmas(x - 1, y - 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x - 1, y - 1, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x - 1, y + 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x - 1, y + 1, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x + 1, y - 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x + 1, y - 1, nextStfIndex);
-		}
-
-		if (TestIndexForXmas(x + 1, y + 1, STFIndex))
-		{
-			return FindAdjadcentCharFunc(x + 1, y + 1, nextStfIndex);
-		}
-
-		return true;
+		return false;
 	};
 
+	std::vector<Pos> found;
 	for (int i = 0; i < m_dayData.m_rawData.size(); ++i)
 	{
-		const std::string& row = m_dayData.m_rawData[0];
+		const std::string& row = m_dayData.m_rawData[i];
 		for (int j = 0; j < row.size(); ++j)
 		{
 			const char xmasChar = row[j];
 
-			constexpr int strToFindIndex = 0;
-			if (FindAdjadcentCharFunc(j, i, strToFindIndex))
+			if (xmasChar == 'X')
 			{
-				xmasCount++;
+				DebugReport("X: Pos " + std::to_string(j) + ", " + std::to_string(i));
+				DebugReportEndl();
+
+				found.push_back({ j, i });
+				constexpr int strToFindIndex = 1;
+				for (const Pos& posToTest : posOffsetsToTest)
+				{
+					FindAdjadcentCharFunc(j, i, strToFindIndex, posToTest);
+				}
 			}
 		}
 	}
