@@ -14,38 +14,43 @@ Day05::Day05()
 
 void Day05::RunDayPart1()
 {
-	m_dayData.m_enableDebugReport = false;
-
-}
-
-void Day05::RunDayPart2()
-{
 	m_dayData.m_enableDebugReport = true;
-
 	int sum = 0;
-	int i = 0;
-	typedef std::multimap<int, int> NumMap;
-	NumMap orderRules;
+	int lineIndex = 0;
+	std::unordered_map<int, std::vector<int>> forwardOrderRules;
+	std::unordered_map<int, std::vector<int>> backwardOrderRules;
+
 	{
+		typedef std::multimap<int, int> NumMap;
+		NumMap orderRulesInitial;
 		std::string row;
+
 		do
 		{
-			row = m_dayData.m_rawData[i];
+			row = m_dayData.m_rawData[lineIndex];
 
 			if (row != "")
 			{
 				auto tokenPos = row.find("|");
-				std::string a = row.substr(0, tokenPos);
-				std::string b = row.substr(tokenPos + 1);
-				orderRules.insert({ std::stoi(a), std::stoi(b) });
+				const std::string aStr = row.substr(0, tokenPos);
+				const std::string bStr = row.substr(tokenPos + 1);
+				const int a = std::stoi(aStr);
+				const int b = std::stoi(bStr);
+				orderRulesInitial.insert({ a, b });
 			}
-			i++;
-		} while (i < m_dayData.m_rawData.size() && row != "");
+			lineIndex++;
+		} while (lineIndex < m_dayData.m_rawData.size() && row != "");
+
+		for (auto& [k, v] : orderRulesInitial)
+		{
+			forwardOrderRules[k].push_back(v);
+			backwardOrderRules[v].push_back(k);
+		}
 	}
 
-	for (i; i < m_dayData.m_rawData.size(); ++i)
+	for (lineIndex; lineIndex < m_dayData.m_rawData.size(); ++lineIndex)
 	{
-		const std::string& row = m_dayData.m_rawData[i];
+		const std::string& row = m_dayData.m_rawData[lineIndex];
 
 		std::string remaining = row;
 		std::string::size_type tokenPos = 0;
@@ -59,22 +64,17 @@ void Day05::RunDayPart2()
 		} while (tokenPos != std::string::npos);
 
 		bool isGood = true;
-		for (int numindex = 0; numindex < numbers.size() - 1; ++numindex)
+		for (int i = 0; i < numbers.size(); ++i)
 		{
-			bool found = false;
-			for (NumMap::iterator it = orderRules.find(numbers[numindex]); it != orderRules.end(); ++it)
+			int currentNum = numbers[i];
+			for (int j = i + 1; j < numbers.size(); ++j)
 			{
-
-				if (it->second == numbers[numindex+1])
+				int nextNum = numbers[j];
+				if (std::find(forwardOrderRules[currentNum].cbegin(), forwardOrderRules[currentNum].cend(), nextNum) == forwardOrderRules[currentNum].cend() ||
+					std::find(forwardOrderRules[nextNum].cbegin(), forwardOrderRules[nextNum].cend(), currentNum) != forwardOrderRules[nextNum].cend())
 				{
-					found = true;
+					isGood = false;
 				}
-			}
-
-			if (!found)
-			{
-				isGood = false;
-				break;
 			}
 		}
 
@@ -86,6 +86,12 @@ void Day05::RunDayPart2()
 			sum += goodNum;
 		}
 	}
-	
+
 	std::cout << sum << std::endl;
+
+}
+
+void Day05::RunDayPart2()
+{
+	m_dayData.m_enableDebugReport = false;
 }
