@@ -17,6 +17,10 @@ public:
 	virtual void RunDayPart2() override;
 
 private:
+	void RunDay();
+
+	int m_visits = 0;
+	std::vector<struct Place> m_rotations;
 };
 
 CREATE_DAY(Day06)
