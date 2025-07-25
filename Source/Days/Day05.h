@@ -17,6 +17,7 @@ public:
 	virtual void RunDayPart2() override;
 
 private:
+	void RunDay(const bool lookForGoodLines, const bool FixBadLines);
 };
 
 CREATE_DAY(Day05)

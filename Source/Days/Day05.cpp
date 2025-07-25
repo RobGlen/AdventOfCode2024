@@ -14,7 +14,22 @@ Day05::Day05()
 
 void Day05::RunDayPart1()
 {
-	m_dayData.m_enableDebugReport = true;
+	m_dayData.m_enableDebugReport = false;
+	constexpr bool lookForGoodLines = true;
+	constexpr bool fixBadLines = false;
+	RunDay(lookForGoodLines, fixBadLines);
+}
+
+void Day05::RunDayPart2()
+{
+	m_dayData.m_enableDebugReport = false;
+	constexpr bool lookForGoodLines = false;
+	constexpr bool fixBadLines = true;
+	RunDay(lookForGoodLines, fixBadLines);
+}
+
+void Day05::RunDay(const bool lookForGoodLines, const bool fixBadLines)
+{
 	int sum = 0;
 	int lineIndex = 0;
 	std::unordered_map<int, std::vector<int>> forwardOrderRules;
@@ -78,20 +93,61 @@ void Day05::RunDayPart1()
 			}
 		}
 
-		if (isGood)
+		if (isGood && lookForGoodLines)
 		{
 			int goodNum = numbers[(numbers.size() - 1) / 2];
 			DebugReport(std::to_string(goodNum));
 			DebugReportEndl();
 			sum += goodNum;
 		}
+		else if (!isGood && !lookForGoodLines)
+		{
+			if (fixBadLines)
+			{
+				auto DoesOrderRulesContain = [&forwardOrderRules](int a, int b) -> bool
+				{
+					return std::find(forwardOrderRules[a].cbegin(), forwardOrderRules[a].cend(), b) != forwardOrderRules[a].cend();
+				};
+				std::vector<int> newNumbers;
+				newNumbers.push_back(numbers[0]);
+				for (int i = 0; i < numbers.size(); ++i)
+				{
+					int currentNum = numbers[i];
+
+					if (std::find(newNumbers.cbegin(), newNumbers.cend(), currentNum) != newNumbers.cend())
+					{
+						continue;
+					}
+
+					bool insertFound = false;
+					for (int j = 0; j < newNumbers.size(); ++j)
+					{
+						if (DoesOrderRulesContain(currentNum, newNumbers[j]))
+						{
+							insertFound = true;
+							newNumbers.insert(newNumbers.cbegin() + j, currentNum);
+							break;
+						}
+					}
+
+					if (!insertFound)
+					{
+						newNumbers.push_back(currentNum);
+					}
+				}
+
+				int goodNum = newNumbers[(newNumbers.size() - 1) / 2];
+				
+				for (int i = 0; i < newNumbers.size(); ++i)
+				{
+					DebugReport(std::to_string(newNumbers[i]) + ",");
+				}
+				DebugReport(": " + std::to_string(goodNum));
+				DebugReportEndl();
+				sum += goodNum;
+			}
+		}
 	}
 
 	std::cout << sum << std::endl;
-
-}
-
-void Day05::RunDayPart2()
-{
-	m_dayData.m_enableDebugReport = false;
 }
