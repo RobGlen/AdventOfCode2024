@@ -25,6 +25,7 @@
     <ClCompile Include="Source\Days\Day03.cpp" />
     <ClCompile Include="Source\Days\Day04.cpp" />
     <ClCompile Include="Source\Days\Day05.cpp" />
+    <ClCompile Include="Source\Days\Day06.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Utils\DayManager.cpp" />
     <ClCompile Include="Source\Utils\DayParser.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="Source\Days\Day03.h" />
     <ClInclude Include="Source\Days\Day04.h" />
     <ClInclude Include="Source\Days\Day05.h" />
+    <ClInclude Include="Source\Days\Day06.h" />
     <ClInclude Include="Source\Utils\DayManager.h" />
     <ClInclude Include="Source\Utils\DayParser.h" />
   </ItemGroup>
